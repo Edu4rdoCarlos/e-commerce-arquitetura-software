@@ -36,4 +36,15 @@ public class EmailEvent {
     public Order getOrder() {
         return order;
     }
+
+    @Override
+    public String toString() {
+        return "EmailEvent{" +
+                "to='" + to + '\'' +
+                ", subject='" + subject + '\'' +
+                ", body='" + body + '\'' +
+                ", eventType='" + eventType + '\'' +
+                ", total=" + order.getTotal() +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package app;
 
+import consumer.EmailConsumer;
 import infra.DatabaseConnection;
 import infra.DatabaseInitializer;
 
@@ -48,6 +49,8 @@ public class Main {
             logger.info("=== Detalhes do Pedido #1 ===");
             oc.viewOrderDetails(1L);
 
+            EmailConsumer ec = new EmailConsumer();
+            ec.consume();
         } catch (SQLException e) {
             e.printStackTrace();
         }
