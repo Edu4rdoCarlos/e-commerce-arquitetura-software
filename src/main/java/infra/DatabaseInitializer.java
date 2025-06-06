@@ -71,13 +71,13 @@ public class DatabaseInitializer {
     """);
 
         stmt.executeUpdate("""
-        INSERT INTO products (name, price, stock) 
+        INSERT INTO products (id, name, price, stock) 
         VALUES 
-            ('Mouse Gamer', 150.00, 50),
-            ('Teclado Mecânico', 250.00, 30),
-            ('Monitor 24"', 800.00, 20),
-            ('Headset Bluetooth', 300.00, 15),
-            ('Cadeira Ergonômica', 1200.00, 5)
+            (1,'Mouse Gamer', 150.00, 50),
+            (2,'Teclado Mecânico', 250.00, 30),
+            (3,'Monitor 24"', 800.00, 20),
+            (4,'Headset Bluetooth', 300.00, 15),
+            (5,'Cadeira Ergonômica', 1200.00, 5)
         ON CONFLICT DO NOTHING;
     """);
 
