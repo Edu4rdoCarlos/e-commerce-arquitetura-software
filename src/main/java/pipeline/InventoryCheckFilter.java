@@ -1,6 +1,6 @@
 package pipeline;
 
-import model.Product;
+import domain.model.Product;
 
 public class InventoryCheckFilter implements Filter {
 

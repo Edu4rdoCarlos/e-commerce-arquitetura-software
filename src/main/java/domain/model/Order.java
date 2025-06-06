@@ -1,4 +1,4 @@
-package model;
+package domain.model;
 
 public class Order {
     private Long id;

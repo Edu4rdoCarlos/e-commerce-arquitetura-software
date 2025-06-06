@@ -1,17 +1,21 @@
 package service;
 
-import model.Order;
-import model.Product;
-import model.User;
-import infra.DatabaseConnection;
-import event.EventPublisher;
-import filter.InventoryCheckFilter;
-import filter.ShippingCalculationFilter;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import domain.model.Order;
+import domain.model.Product;
+import domain.model.User;
+import event.EventPublisher;
+import filter.InventoryCheckFilter;
+import filter.ShippingCalculationFilter;
+import infra.DatabaseConnection;
 
 public class OrderService {
     private static final Logger logger = Logger.getLogger(OrderService.class.getName());
@@ -52,7 +56,7 @@ public class OrderService {
             ps.close();
             conn.close();
 
-            Order order = new Order(orderId, user, total, status);
+            Order order = new Order(orderId, user, total, status, total);
             logger.info("Pedido criado com sucesso! Total: R$ " + total);
             eventPublisher.publish("OrderCreated", order);
 
@@ -76,7 +80,7 @@ public class OrderService {
                     rs.getLong("id"),
                     user,
                     rs.getDouble("total"),
-                    rs.getString("status")
+                    rs.getString("status"), null
                 );
                 orders.add(order);
             }
@@ -106,7 +110,7 @@ public class OrderService {
                 String status = rs.getString("status");
                 User user = new User(userId, "Desconhecido", "email@placeholder.com");
 
-                Order order = new Order(id, user, total, status);
+                Order order = new Order(id, user, total, status, total);
                 rs.close();
                 ps.close();
                 conn.close();

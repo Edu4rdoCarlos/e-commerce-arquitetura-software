@@ -1,8 +1,8 @@
 package event;
 
-import model.Order;
-
 import java.util.logging.Logger;
+
+import domain.model.Order;
 
 public class EventPublisher {
     private static final Logger logger = Logger.getLogger(EventPublisher.class.getName());

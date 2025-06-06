@@ -1,7 +1,8 @@
 package filter;
 
-import model.Product;
 import java.util.List;
+
+import domain.model.Product;
 
 public class InventoryCheckFilter {
     public boolean apply(List<Product> products) {

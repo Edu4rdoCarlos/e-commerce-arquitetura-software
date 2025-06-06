@@ -1,13 +1,16 @@
 package service;
 
-import model.Order;
-import model.Product;
-import model.User;
-import infra.DatabaseConnection;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import domain.model.Order;
+import domain.model.Product;
+import domain.model.User;
+import infra.DatabaseConnection;
 
 public class AdminService {
 
@@ -32,7 +35,7 @@ public class AdminService {
                     rs.getLong("id"),
                     user,
                     rs.getDouble("total"),
-                    rs.getString("status")
+                    rs.getString("status"), null
                 );
                 orders.add(order);
             }
