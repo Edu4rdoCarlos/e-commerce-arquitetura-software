@@ -1,4 +1,4 @@
-package pipeline;
+package filters;
 
 import domain.model.Cart;
 import domain.model.Product;

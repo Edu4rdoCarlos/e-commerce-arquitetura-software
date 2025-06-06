@@ -3,7 +3,7 @@ package service;
 import java.util.List;
 
 import domain.model.Product;
-import repository.ProductRepository;
+import infra.repository.ProductRepository;
 
 public class ProductService {
 

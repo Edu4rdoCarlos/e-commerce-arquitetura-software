@@ -1,6 +1,6 @@
 package event;
 
-import model.Order;
+import domain.model.Order;
 
 public class EmailEvent {
     private String to;

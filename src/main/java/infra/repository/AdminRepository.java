@@ -1,4 +1,4 @@
-package repository;
+package infra.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,26 +13,30 @@ import domain.model.User;
 import infra.DatabaseConnection;
 
 public class AdminRepository {
-    public List<Order> findAllOrders() throws SQLException {
+
+    public List<Order> getAllOrders() throws SQLException {
         List<Order> orders = new ArrayList<>();
+
         Connection conn = DatabaseConnection.getInstance();
         PreparedStatement ps = conn.prepareStatement(
                 "SELECT o.id, o.total, o.status, u.id as user_id, u.name, u.email " +
-                        "FROM orders o JOIN users u ON o.user_id = u.id");
+                        "FROM orders o JOIN users u ON o.user_id = u.id"
+        );
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
             User user = new User(
                     rs.getLong("user_id"),
                     rs.getString("name"),
-                    rs.getString("email"));
+                    rs.getString("email")
+            );
 
             Order order = new Order(
                     rs.getLong("id"),
                     user,
                     rs.getDouble("total"),
-                    rs.getString("status"),
-                    null);
+                    rs.getString("status")
+            );
             orders.add(order);
         }
 
@@ -46,20 +50,22 @@ public class AdminRepository {
     public boolean updateOrderStatus(Long orderId, String newStatus) throws SQLException {
         Connection conn = DatabaseConnection.getInstance();
         PreparedStatement ps = conn.prepareStatement(
-                "UPDATE orders SET status = ? WHERE id = ?");
+                "UPDATE orders SET status = ? WHERE id = ?"
+        );
         ps.setString(1, newStatus);
         ps.setLong(2, orderId);
-        int rowsAffected = ps.executeUpdate();
+        int rows = ps.executeUpdate();
 
         ps.close();
         conn.close();
-        return rowsAffected > 0;
+        return rows > 0;
     }
 
-    public void saveProduct(Product product) throws SQLException {
+    public void createProduct(Product product) throws SQLException {
         Connection conn = DatabaseConnection.getInstance();
         PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO products (name, price, stock) VALUES (?, ?, ?)");
+                "INSERT INTO products (name, price, stock) VALUES (?, ?, ?)"
+        );
         ps.setString(1, product.getName());
         ps.setDouble(2, product.getPrice());
         ps.setInt(3, product.getStock());
@@ -72,7 +78,8 @@ public class AdminRepository {
     public void updateProduct(Product product) throws SQLException {
         Connection conn = DatabaseConnection.getInstance();
         PreparedStatement ps = conn.prepareStatement(
-                "UPDATE products SET name = ?, price = ?, stock = ? WHERE id = ?");
+                "UPDATE products SET name = ?, price = ?, stock = ? WHERE id = ?"
+        );
         ps.setString(1, product.getName());
         ps.setDouble(2, product.getPrice());
         ps.setInt(3, product.getStock());
@@ -86,7 +93,8 @@ public class AdminRepository {
     public void deleteProduct(Long id) throws SQLException {
         Connection conn = DatabaseConnection.getInstance();
         PreparedStatement ps = conn.prepareStatement(
-                "DELETE FROM products WHERE id = ?");
+                "DELETE FROM products WHERE id = ?"
+        );
         ps.setLong(1, id);
         ps.executeUpdate();
 
@@ -94,10 +102,11 @@ public class AdminRepository {
         conn.close();
     }
 
-    public void saveUser(User user) throws SQLException {
+    public void createUser(User user) throws SQLException {
         Connection conn = DatabaseConnection.getInstance();
         PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO users (name, email) VALUES (?, ?)");
+                "INSERT INTO users (name, email) VALUES (?, ?)"
+        );
         ps.setString(1, user.getName());
         ps.setString(2, user.getEmail());
         ps.executeUpdate();
@@ -109,7 +118,8 @@ public class AdminRepository {
     public void deleteUser(Long id) throws SQLException {
         Connection conn = DatabaseConnection.getInstance();
         PreparedStatement ps = conn.prepareStatement(
-                "DELETE FROM users WHERE id = ?");
+                "DELETE FROM users WHERE id = ?"
+        );
         ps.setLong(1, id);
         ps.executeUpdate();
 

@@ -1,4 +1,4 @@
-package repository;
+package infra.repository;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

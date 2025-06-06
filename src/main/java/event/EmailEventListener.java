@@ -1,14 +1,18 @@
 package event;
 
-import com.rabbitmq.client.*;
-import model.MessageType;
-import service.EmailService;
-import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
+
+import com.google.gson.Gson;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DeliverCallback;
+
+import domain.model.MessageType;
+import service.EmailService;
 
 public class EmailEventListener {
     private static final Logger logger = Logger.getLogger(EmailEventListener.class.getName());
