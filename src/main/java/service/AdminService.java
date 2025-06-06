@@ -7,14 +7,15 @@ import java.util.List;
 import domain.model.Order;
 import domain.model.Product;
 import domain.model.User;
-import repository.AdminRepository;
+import infra.repository.AdminRepository;
 
 public class AdminService {
-    private AdminRepository adminRepository = new AdminRepository();
+
+    private final AdminRepository repository = new AdminRepository();
 
     public List<Order> getAllOrders() {
         try {
-            return adminRepository.findAllOrders();
+            return repository.getAllOrders();
         } catch (SQLException e) {
             e.printStackTrace();
             return Collections.emptyList();
@@ -23,7 +24,7 @@ public class AdminService {
 
     public boolean updateOrderStatus(Long orderId, String newStatus) {
         try {
-            return adminRepository.updateOrderStatus(orderId, newStatus);
+            return repository.updateOrderStatus(orderId, newStatus);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -32,7 +33,7 @@ public class AdminService {
 
     public void createProduct(Product product) {
         try {
-            adminRepository.saveProduct(product);
+            repository.createProduct(product);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,7 +41,7 @@ public class AdminService {
 
     public void updateProduct(Product product) {
         try {
-            adminRepository.updateProduct(product);
+            repository.updateProduct(product);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,7 +49,7 @@ public class AdminService {
 
     public void deleteProduct(Long id) {
         try {
-            adminRepository.deleteProduct(id);
+            repository.deleteProduct(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,7 +57,7 @@ public class AdminService {
 
     public void createUser(User user) {
         try {
-            adminRepository.saveUser(user);
+            repository.createUser(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,7 +65,7 @@ public class AdminService {
 
     public void deleteUser(Long id) {
         try {
-            adminRepository.deleteUser(id);
+            repository.deleteUser(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }

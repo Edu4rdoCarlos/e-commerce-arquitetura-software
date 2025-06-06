@@ -2,6 +2,7 @@ package app;
 
 import controller.OrderController;
 import controller.ProductController;
+import domain.model.Cart;
 import domain.model.Product;
 import domain.model.User;
 import infra.DatabaseConnection;

@@ -14,5 +14,26 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+    volumes:
+      - rabbitmq-lib:/var/lib/rabbitmq/
+      - rabbitmq-log:/var/log/rabbitmq
+    command: >
+      sh -c "rabbitmq-plugins enable --offline rabbitmq_management &&
+             rabbitmq-server"
+
 volumes:
+  rabbitmq-lib:
+    driver: local
+  rabbitmq-log:
+    driver: local
   pgdata:
