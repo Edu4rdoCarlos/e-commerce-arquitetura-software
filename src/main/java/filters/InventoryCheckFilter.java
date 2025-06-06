@@ -1,9 +1,7 @@
-package pipeline;
+package filters;
 
-import model.Cart;
-import model.Product;
-
-import java.util.List;
+import domain.model.Cart;
+import domain.model.Product;
 
 
 public class InventoryCheckFilter implements Filter<Cart, String> {

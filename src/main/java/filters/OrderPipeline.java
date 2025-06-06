@@ -1,9 +1,9 @@
-package pipeline;
-
-import model.Cart;
+package filters;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import domain.model.Cart;
 
 public class OrderPipeline {
 

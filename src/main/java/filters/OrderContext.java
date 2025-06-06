@@ -1,8 +1,9 @@
-package pipeline;
+package filters;
 
-import model.Order;
-import model.Product;
 import java.util.List;
+
+import domain.model.Order;
+import domain.model.Product;
 
 public class OrderContext {
     public Order order;

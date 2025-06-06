@@ -1,7 +1,8 @@
 package service;
 
-import model.Order;
 import java.util.logging.Logger;
+
+import domain.model.Order;
 
 public class EmailService {
     private static final Logger logger = Logger.getLogger(EmailService.class.getName());

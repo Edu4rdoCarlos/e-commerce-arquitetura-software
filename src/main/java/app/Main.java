@@ -1,21 +1,21 @@
 package app;
 
-import consumer.EmailConsumer;
 import infra.DatabaseConnection;
 import infra.DatabaseInitializer;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import controller.ProductController;
-import controller.OrderController;
-import model.Cart;
-import model.Product;
-import model.User;
-
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
+
+import controller.OrderController;
+import controller.ProductController;
+import domain.model.Cart;
+import domain.model.Product;
+import domain.model.User;
+import infra.DatabaseConnection;
+import infra.DatabaseInitializer;
 
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());

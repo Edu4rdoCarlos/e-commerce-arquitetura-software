@@ -135,6 +135,7 @@ buildNumber.properties
 .classpath
 
 ### VisualStudioCode ###
+setting.json
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

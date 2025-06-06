@@ -1,12 +1,13 @@
 package event;
 
+import java.util.logging.Logger;
+
 import com.google.gson.Gson;
+
+import domain.model.MessageType;
+import domain.model.Order;
 import infra.message.INotifier;
 import infra.message.Notifier;
-import model.MessageType;
-import model.Order;
-
-import java.util.logging.Logger;
 
 public class EventPublisher {
     private static final Logger logger = Logger.getLogger(EventPublisher.class.getName());

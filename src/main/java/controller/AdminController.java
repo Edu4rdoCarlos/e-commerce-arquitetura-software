@@ -1,12 +1,12 @@
 package controller;
 
-import model.Order;
-import model.Product;
-import model.User;
-import service.AdminService;
-
 import java.util.List;
 import java.util.logging.Logger;
+
+import domain.model.Order;
+import domain.model.Product;
+import domain.model.User;
+import service.AdminService;
 
 public class AdminController {
     private static final Logger logger = Logger.getLogger(AdminController.class.getName());

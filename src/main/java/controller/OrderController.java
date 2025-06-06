@@ -1,14 +1,12 @@
 package controller;
 
-import model.Cart;
-import model.Order;
-import model.Product;
-import model.User;
-import service.OrderService;
-
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
+
+import domain.model.Cart;
+import domain.model.Order;
+import domain.model.User;
+import service.OrderService;
 
 public class OrderController {
     private static final Logger logger = Logger.getLogger(OrderController.class.getName());

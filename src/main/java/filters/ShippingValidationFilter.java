@@ -1,9 +1,6 @@
-package pipeline;
+package filters;
 
-import model.Cart;
-import model.Product;
-
-import java.util.List;
+import domain.model.Cart;
 
 public class ShippingValidationFilter implements Filter<Cart, String> {
     @Override
