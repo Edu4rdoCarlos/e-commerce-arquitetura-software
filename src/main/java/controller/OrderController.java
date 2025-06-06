@@ -1,10 +1,12 @@
 package controller;
 
+import model.Cart;
 import model.Order;
 import model.Product;
 import model.User;
 import service.OrderService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -13,8 +15,8 @@ public class OrderController {
 
     private OrderService orderService = new OrderService();
 
-    public void createOrder(User user, List<Product> products) {
-        orderService.createOrder(user, products);
+    public void createOrder(Cart cart) {
+        orderService.createOrder(cart);
     }
 
     public void listOrders(User user) {

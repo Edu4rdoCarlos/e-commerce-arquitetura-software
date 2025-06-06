@@ -24,7 +24,7 @@ public class AdminController {
         boolean updated = adminService.updateOrderStatus(orderId, newStatus);
         if (updated) {
             logger.info("Status do pedido #" + orderId + " atualizado para '" + newStatus + "'.");
-        } else {"sro"
+        } else {
             logger.warning("Não foi possível atualizar o status do pedido #" + orderId + ".");
         }
     }

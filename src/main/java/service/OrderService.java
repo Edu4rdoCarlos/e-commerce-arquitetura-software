@@ -1,12 +1,15 @@
 package service;
 
+import model.Cart;
 import model.Order;
 import model.Product;
 import model.User;
 import infra.DatabaseConnection;
 import event.EventPublisher;
-import filter.InventoryCheckFilter;
-import filter.ShippingCalculationFilter;
+import pipeline.InventoryCheckFilter;
+import pipeline.OrderContext;
+import pipeline.OrderPipeline;
+import pipeline.ShippingValidationFilter;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,27 +20,33 @@ public class OrderService {
     private static final Logger logger = Logger.getLogger(OrderService.class.getName());
 
     private EventPublisher eventPublisher = new EventPublisher();
-    private InventoryCheckFilter inventoryFilter = new InventoryCheckFilter();
-    private ShippingCalculationFilter shippingFilter = new ShippingCalculationFilter();
-
-    public void createOrder(User user, List<Product> products) {
+    private Connection conn;
+    private OrderPipeline pipeline;
+    public OrderService() {
         try {
-            Connection conn = DatabaseConnection.getInstance();
+            conn = DatabaseConnection.getInstance();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        pipeline = new OrderPipeline();
+        pipeline.addFilter(new InventoryCheckFilter());
+        pipeline.addFilter(new ShippingValidationFilter());
+    }
 
-            if (!inventoryFilter.apply(products)) {
-                logger.warning("Erro: produto sem estoque.");
-                return;
-            }
+    public void createOrder(Cart cart) {
+        try {
+            pipeline.execute(cart);
 
-            double shippingCost = shippingFilter.apply(products);
-            double total = products.stream().mapToDouble(Product::getPrice).sum() + shippingCost;
             String status = "PROCESSING";
 
             PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO orders (user_id, total, status) VALUES (?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
             );
-            ps.setLong(1, user.getId());
+
+            double total = cart.getProducts().stream().mapToDouble(Product::getPrice).sum();
+
+            ps.setLong(1, cart.getUser().getId());
             ps.setDouble(2, total);
             ps.setString(3, status);
             ps.executeUpdate();
@@ -52,12 +61,14 @@ public class OrderService {
             ps.close();
             conn.close();
 
-            Order order = new Order(orderId, user, total, status);
+            Order order = new Order(orderId, cart.getUser(), total, status);
             logger.info("Pedido criado com sucesso! Total: R$ " + total);
             eventPublisher.publish("OrderCreated", order);
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -120,6 +131,36 @@ public class OrderService {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    public Order updateOrderStatus(Long orderId, String newStatus) {
+        try {
+            Connection conn = DatabaseConnection.getInstance();
+            PreparedStatement ps = conn.prepareStatement(
+                "UPDATE orders SET status = ? WHERE id = ?"
+            );
+            ps.setString(1, newStatus);
+            ps.setLong(2, orderId);
+            int rowsAffected = ps.executeUpdate();
+            ps.close();
+            
+            if (rowsAffected > 0) {
+                Order updatedOrder = getOrderById(orderId);
+                
+                if (updatedOrder != null) {
+                    logger.info("Status do pedido #" + orderId + " atualizado para: " + newStatus);
+                    eventPublisher.publish("OrderStatusUpdated", updatedOrder);
+                    return updatedOrder;
+                }
+            }
+            
+            conn.close();
+        } catch (SQLException e) {
+            logger.severe("Erro ao atualizar status do pedido: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
         return null;
     }
 }
