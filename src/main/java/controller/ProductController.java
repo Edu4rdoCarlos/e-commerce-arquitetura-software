@@ -1,8 +1,9 @@
 package controller;
 
-import model.Product;
-import service.ProductService;
 import java.util.List;
+
+import domain.model.Product;
+import service.ProductService;
 
 public class ProductController {
     private ProductService productService = new ProductService();

@@ -1,11 +1,23 @@
 package event;
 
-import model.Order;
-
 import java.util.logging.Logger;
+
+import com.google.gson.Gson;
+
+import domain.model.MessageType;
+import domain.model.Order;
+import infra.message.INotifier;
+import infra.message.Notifier;
 
 public class EventPublisher {
     private static final Logger logger = Logger.getLogger(EventPublisher.class.getName());
+    private final INotifier notifier;
+    private final Gson gson;
+
+    public EventPublisher() {
+        this.notifier = new Notifier();
+        this.gson = new Gson();
+    }
 
     public void publish(String eventName, Order order) {
         logger.info("Evento publicado: " + eventName);
@@ -14,6 +26,25 @@ public class EventPublisher {
         logger.info("- Usuário ID: " + order.getUser().getId());
         logger.info("- Total: R$" + order.getTotal());
         logger.info("- Status: " + order.getStatus());
+        
+        if (eventName.equals("OrderCreated")) {
+            publishEmailEvent("ORDER_CONFIRMATION", order);
+        } else if (eventName.equals("OrderStatusUpdated")) {
+            publishEmailEvent("ORDER_STATUS_UPDATE", order);
+        }
+    }
+
+    public void publishEmailEvent(String eventType, Order order) {
+        String to = order.getUser().getEmail();
+        String subject = eventType.equals("ORDER_CONFIRMATION") ? 
+                "Confirmação do Pedido #" + order.getId() : 
+                "Atualização do Pedido #" + order.getId();
+        
+        EmailEvent emailEvent = new EmailEvent(to, subject, "", eventType, order);
+        
+        String jsonMessage = gson.toJson(emailEvent);
+        notifier.sendMessage(jsonMessage, MessageType.EMAIL);
+        
+        logger.info("Evento de email publicado: " + eventType);
     }
 }
-

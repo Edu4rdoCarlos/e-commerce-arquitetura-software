@@ -1,19 +1,18 @@
 package app;
 
-import infra.DatabaseConnection;
-import infra.DatabaseInitializer;
-
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import controller.ProductController;
-import controller.OrderController;
-import model.Product;
-import model.User;
-
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
+
+import controller.OrderController;
+import controller.ProductController;
+import domain.model.Cart;
+import domain.model.Product;
+import domain.model.User;
+import infra.DatabaseConnection;
+import infra.DatabaseInitializer;
 
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
@@ -33,11 +32,13 @@ public class Main {
 
             Product p1 = new Product(1L, "Notebook", 3500.00, 10);
             Product p2 = new Product(2L, "Smartphone", 2200.00, 5);
-            List<Product> produtosSelecionados = Arrays.asList(p1, p2);
+            List<Product> selectedProducts = Arrays.asList(p1, p2);
+
+            Cart cart = new Cart(1L, user, selectedProducts);
 
             logger.info("=== Criando Pedido ===");
             OrderController oc = new OrderController();
-            oc.createOrder(user, produtosSelecionados);
+            oc.createOrder(cart);
 
             logger.info("=== Pedidos do Usuário ===");
             oc.listOrders(user);
