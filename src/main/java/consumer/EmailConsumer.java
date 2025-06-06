@@ -23,6 +23,8 @@ public class EmailConsumer {
             Connection connection = factory.newConnection();
             channel = connection.createChannel();
 
+            channel.queueDeclare(queueName, true, false, false, null);
+
             consumer = new EventConsumer(channel);
         } catch (IOException | TimeoutException e) {
             throw new RuntimeException(e);
