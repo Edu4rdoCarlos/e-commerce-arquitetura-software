@@ -3,8 +3,8 @@ package controller;
 import java.util.List;
 import java.util.logging.Logger;
 
+import domain.model.Cart;
 import domain.model.Order;
-import domain.model.Product;
 import domain.model.User;
 import service.OrderService;
 
@@ -13,8 +13,8 @@ public class OrderController {
 
     private OrderService orderService = new OrderService();
 
-    public void createOrder(User user, List<Product> products) {
-        orderService.createOrder(user, products);
+    public void createOrder(Cart cart) {
+        orderService.createOrder(cart);
     }
 
     public void listOrders(User user) {

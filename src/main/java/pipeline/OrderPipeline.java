@@ -1,19 +1,21 @@
 package pipeline;
 
+import model.Cart;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderPipeline {
 
-    private final List<Filter> filters = new ArrayList<>();
+    private final List<Filter<OrderContext, String>> filters = new ArrayList<>();
 
     public void addFilter(Filter filter) {
         filters.add(filter);
     }
 
-    public void execute(OrderContext context) throws Exception {
+    public void execute(Cart cart) throws Exception {
         for (Filter filter : filters) {
-            filter.execute(context);
+            System.out.println(filter.execute(cart));
         }
     }
 }

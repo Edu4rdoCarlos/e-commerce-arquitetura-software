@@ -1,18 +1,22 @@
 package pipeline;
 
+import domain.model.Cart;
 import domain.model.Product;
 
-public class InventoryCheckFilter implements Filter {
+
+public class InventoryCheckFilter implements Filter<Cart, String> {
 
     @Override
-    public void execute(OrderContext context) throws Exception {
+    public String execute(Cart cart) throws Exception {
         System.out.println("🔍 Verificando estoque...");
 
-        for (Product product : context.products) {
+        for (Product product : cart.getProducts()) {
             if (product.getStock() <= 0) {
                 throw new Exception("Produto fora de estoque: " + product.getName());
             }
-            System.out.println("✔ Produto OK: " + product.getName());
+            return "✔ Produto OK: " + product.getName();
         }
+
+        return null;
     }
 }

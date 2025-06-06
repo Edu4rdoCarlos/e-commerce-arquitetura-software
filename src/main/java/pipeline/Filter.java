@@ -1,5 +1,5 @@
 package pipeline;
 
-public interface Filter {
-    void execute(OrderContext context) throws Exception;
+public interface Filter<I, O> {
+    O execute(I context) throws Exception;
 }

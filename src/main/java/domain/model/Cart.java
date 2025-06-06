@@ -7,10 +7,13 @@ public class Cart {
     private User user;
     private List<Product> products;
 
+    private double shipping;
+
     public Cart(Long id, User user, List<Product> products) {
         this.id = id;
         this.user = user;
         this.products = products;
+        this.shipping = 30.0;
     }
 
     public Long getId() { return id; }
@@ -21,4 +24,7 @@ public class Cart {
 
     public List<Product> getProducts() { return products; }
     public void setProducts(List<Product> products) { this.products = products; }
+
+    public double getShipping() { return shipping; }
+    public void setShipping(double shipping) { this.shipping = shipping; }
 }
