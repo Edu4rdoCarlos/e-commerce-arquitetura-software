@@ -41,4 +41,37 @@ public class ProductRepository {
 
         return products;
     }
+
+    public Product findById(Long id) {
+        Product product = null;
+
+        try {
+            Connection conn = DatabaseConnection.getInstance();
+            Statement stmt = conn.createStatement();
+
+            String query = "SELECT id, name, price, stock FROM products WHERE id = " + id;
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                product = new Product(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock")
+                );
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return product;
+    }
+
+
+
 }

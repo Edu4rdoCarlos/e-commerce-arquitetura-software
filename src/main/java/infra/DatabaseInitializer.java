@@ -13,7 +13,9 @@ public class DatabaseInitializer {
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(100),
-                email VARCHAR(100)
+                email VARCHAR(100),
+                password VARCHAR(100),
+                role VARCHAR(100)
             );
         """);
 
@@ -48,6 +50,7 @@ public class DatabaseInitializer {
             CREATE TABLE IF NOT EXISTS cart (
                 user_id INTEGER REFERENCES users(id),
                 product_id INTEGER REFERENCES products(id),
+                shipping FLOAT,
                 PRIMARY KEY (user_id, product_id)
             );
         """);
@@ -59,22 +62,22 @@ public class DatabaseInitializer {
         Statement stmt = conn.createStatement();
 
         stmt.executeUpdate("""
-        INSERT INTO users (name, email) 
+        INSERT INTO users (name, email, password, role)
         VALUES 
-            ('Dudu', 'dudu@email.com'),
-            ('Ana', 'ana@gmail.com'),
-            ('Carlos', 'carlos@hotmail.com')
+            ('Dudu', 'dudu@email.com', '123456', 'admin'),
+            ('Ana', 'ana@gmail.com', '123456', 'user'),
+            ('Carlos', 'carlos@hotmail.com', '123456', 'user')
         ON CONFLICT DO NOTHING;
     """);
 
         stmt.executeUpdate("""
-        INSERT INTO products (name, price, stock) 
+        INSERT INTO products (id, name, price, stock) 
         VALUES 
-            ('Mouse Gamer', 150.00, 50),
-            ('Teclado Mecânico', 250.00, 30),
-            ('Monitor 24"', 800.00, 20),
-            ('Headset Bluetooth', 300.00, 15),
-            ('Cadeira Ergonômica', 1200.00, 5)
+            (1,'Mouse Gamer', 150.00, 50),
+            (2,'Teclado Mecânico', 250.00, 30),
+            (3,'Monitor 24"', 800.00, 20),
+            (4,'Headset Bluetooth', 300.00, 15),
+            (5,'Cadeira Ergonômica', 1200.00, 5)
         ON CONFLICT DO NOTHING;
     """);
 
@@ -97,12 +100,12 @@ public class DatabaseInitializer {
     """);
 
         stmt.executeUpdate("""
-        INSERT INTO cart (user_id, product_id)
+        INSERT INTO cart (user_id, product_id, shipping)
         VALUES 
-            (1, 1),  -- Dudu comprando Mouse
-            (1, 2),  -- Dudu comprando Teclado
-            (2, 4),  -- Ana comprando Headset
-            (3, 3)   -- Carlos comprando Monitor
+            (1, 1, 30.0),  -- Dudu comprando Mouse
+            (1, 2, 30.0),  -- Dudu comprando Teclado
+            (2, 4, 30.0),  -- Ana comprando Headset
+            (3, 3, 30.0)   -- Carlos comprando Monitor
         ON CONFLICT DO NOTHING;
     """);
 
