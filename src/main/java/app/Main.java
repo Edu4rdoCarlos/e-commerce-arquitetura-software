@@ -92,7 +92,8 @@ public class Main {
                                     System.out.println("Produto não encontrado.");
                                 }
                             }
-                            orderController.createOrder(user, produtosSelecionados);
+                            Cart cart = new Cart(UUID.randomUUID().getMostSignificantBits(), user, produtosSelecionados);
+                            orderController.createOrder(cart);
                         }
 
                         case 3 -> orderController.listOrders(user);

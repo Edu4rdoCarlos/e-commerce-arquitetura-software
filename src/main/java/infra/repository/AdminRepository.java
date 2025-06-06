@@ -10,6 +10,7 @@ import java.util.List;
 import domain.model.Order;
 import domain.model.Product;
 import domain.model.User;
+import domain.model.UserRole;
 import infra.DatabaseConnection;
 
 public class AdminRepository {
@@ -25,10 +26,15 @@ public class AdminRepository {
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
+            String roleStr = rs.getString("role");
+            UserRole role = UserRole.fromString(roleStr);
+
             User user = new User(
                     rs.getLong("user_id"),
                     rs.getString("name"),
-                    rs.getString("email")
+                    rs.getString("email"),
+                    rs.getString("password"),
+                    role
             );
 
 
