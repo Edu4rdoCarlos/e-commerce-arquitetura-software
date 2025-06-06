@@ -1,13 +1,13 @@
-package repository;
-
-import domain.model.User;
-import domain.model.UserRole;
-import infra.DatabaseConnection;
+package infra.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import domain.model.User;
+import domain.model.UserRole;
+import infra.DatabaseConnection;
 
 public class UserRepository {
 

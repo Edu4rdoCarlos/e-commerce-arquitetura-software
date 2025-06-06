@@ -1,5 +1,11 @@
 package app;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.UUID;
 import consumer.EmailConsumer;
 import controller.OrderController;
 import controller.ProductController;
@@ -10,13 +16,7 @@ import infra.DatabaseConnection;
 import infra.DatabaseInitializer;
 import service.AuthService;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.logging.Logger;
-
 public class Main {
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
     private static final Scanner scanner = new Scanner(System.in);
     private static final ProductController productController = new ProductController();
     private static final OrderController orderController = new OrderController();

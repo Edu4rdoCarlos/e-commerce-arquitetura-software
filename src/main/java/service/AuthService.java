@@ -1,9 +1,9 @@
 package service;
 
-import domain.model.User;
-import repository.UserRepository;
-
 import java.sql.SQLException;
+
+import domain.model.User;
+import infra.repository.UserRepository;
 
 public class AuthService {
     private final UserRepository userRepository = new UserRepository();

@@ -14,7 +14,8 @@ public class DatabaseInitializer {
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(100),
                 email VARCHAR(100),
-                password VARCHAR(100)
+                password VARCHAR(100),
+                role VARCHAR(100)
             );
         """);
 
@@ -49,8 +50,8 @@ public class DatabaseInitializer {
             CREATE TABLE IF NOT EXISTS cart (
                 user_id INTEGER REFERENCES users(id),
                 product_id INTEGER REFERENCES products(id),
-                PRIMARY KEY (user_id, product_id),
-                shipping DOUBLE
+                shipping FLOAT,
+                PRIMARY KEY (user_id, product_id)
             );
         """);
 
@@ -61,7 +62,7 @@ public class DatabaseInitializer {
         Statement stmt = conn.createStatement();
 
         stmt.executeUpdate("""
-        INSERT INTO users (name, email) 
+        INSERT INTO users (name, email, password, role)
         VALUES 
             ('Dudu', 'dudu@email.com', '123456', 'admin'),
             ('Ana', 'ana@gmail.com', '123456', 'user'),
@@ -99,12 +100,12 @@ public class DatabaseInitializer {
     """);
 
         stmt.executeUpdate("""
-        INSERT INTO cart (user_id, product_id)
+        INSERT INTO cart (user_id, product_id, shipping)
         VALUES 
-            (1, 1),  -- Dudu comprando Mouse
-            (1, 2),  -- Dudu comprando Teclado
-            (2, 4),  -- Ana comprando Headset
-            (3, 3)   -- Carlos comprando Monitor
+            (1, 1, 30.0),  -- Dudu comprando Mouse
+            (1, 2, 30.0),  -- Dudu comprando Teclado
+            (2, 4, 30.0),  -- Ana comprando Headset
+            (3, 3, 30.0)   -- Carlos comprando Monitor
         ON CONFLICT DO NOTHING;
     """);
 
