@@ -1,20 +1,24 @@
 package app;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
 import controller.OrderController;
 import controller.ProductController;
 import domain.model.Product;
 import domain.model.User;
 import infra.DatabaseConnection;
 import infra.DatabaseInitializer;
+import service.AuthService;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.logging.Logger;
 
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final ProductController productController = new ProductController();
+    private static final OrderController orderController = new OrderController();
+    private static final AuthService authService = new AuthService();
 
     public static void main(String[] args) {
         try {
@@ -23,25 +27,84 @@ public class Main {
             DatabaseInitializer.seed(conn);
             conn.close();
 
-            logger.info("=== Produtos Disponíveis ===");
-            ProductController pc = new ProductController();
-            pc.listAllProducts();
+            System.out.println("==== Login ====");
+            System.out.print("Email: ");
+            String email = scanner.nextLine();
+            System.out.print("Senha: ");
+            String senha = scanner.nextLine();
 
-            User user = new User(1L, "Dudu", "dudu@email.com");
+            User user = authService.authenticate(email, senha);
+            if (user == null) {
+                System.out.println("Login inválido. Encerrando...");
+                return;
+            }
 
-            Product p1 = new Product(1L, "Notebook", 3500.00, 10);
-            Product p2 = new Product(2L, "Smartphone", 2200.00, 5);
-            List<Product> produtosSelecionados = Arrays.asList(p1, p2);
+            System.out.printf("Bem-vindo, %s (%s)%n", user.getName(), user.getRole());
 
-            logger.info("=== Criando Pedido ===");
-            OrderController oc = new OrderController();
-            oc.createOrder(user, produtosSelecionados);
+            while (true) {
+                if ("admin".equalsIgnoreCase(user.getRole().toString())) {
+                    System.out.println("\n=== Menu Administrador ===");
+                    System.out.println("1. Monitorar pedidos realizados");
+                    System.out.println("0. Sair");
+                    System.out.print("Escolha: ");
+                    int opc = scanner.nextInt();
 
-            logger.info("=== Pedidos do Usuário ===");
-            oc.listOrders(user);
+                    switch (opc) {
+                        case 1 -> {
+                            System.out.print("ID do usuário para listar pedidos: ");
+                            Long userId = scanner.nextLong();
+                            User tempUser = new User(userId, "", "", "", null);
+                            orderController.listOrders(tempUser);
+                        }
 
-            logger.info("=== Detalhes do Pedido #1 ===");
-            oc.viewOrderDetails(1L);
+                        case 0 -> {
+                            System.out.println("Encerrando...");
+                            return;
+                        }
+                        default -> System.out.println("Opção inválida.");
+                    }
+
+                } else {
+                    System.out.println("\n=== Menu Cliente ===");
+                    System.out.println("1. Pesquisar produtos");
+                    System.out.println("2. Realizar compra");
+                    System.out.println("3. Acompanhar andamento das compras");
+                    System.out.println("0. Sair");
+                    System.out.print("Escolha: ");
+                    int opc = scanner.nextInt();
+
+                    switch (opc) {
+                        case 1 -> productController.listAllProducts();
+
+                        case 2 -> {
+                            List<Product> produtosSelecionados = new ArrayList<>();
+                            while (true) {
+                                System.out.print("ID do produto (0 para finalizar): ");
+                                Long prodId = scanner.nextLong();
+                                if (prodId == 0) break;
+                                System.out.print("Quantidade: ");
+                                int qtd = scanner.nextInt();
+                                Product p = productController.getProductById();
+                                if (p != null) {
+                                    produtosSelecionados.add(new Product(p.getId(), p.getName(), p.getPrice(), qtd));
+                                } else {
+                                    System.out.println("Produto não encontrado.");
+                                }
+                            }
+                            orderController.createOrder(user, produtosSelecionados);
+                        }
+
+                        case 3 -> orderController.listOrders(user);
+
+                        case 0 -> {
+                            System.out.println("Encerrando...");
+                            return;
+                        }
+
+                        default -> System.out.println("Opção inválida.");
+                    }
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();

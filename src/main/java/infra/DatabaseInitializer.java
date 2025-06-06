@@ -13,7 +13,8 @@ public class DatabaseInitializer {
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(100),
-                email VARCHAR(100)
+                email VARCHAR(100),
+                password VARCHAR(100)
             );
         """);
 
@@ -48,7 +49,8 @@ public class DatabaseInitializer {
             CREATE TABLE IF NOT EXISTS cart (
                 user_id INTEGER REFERENCES users(id),
                 product_id INTEGER REFERENCES products(id),
-                PRIMARY KEY (user_id, product_id)
+                PRIMARY KEY (user_id, product_id),
+                shipping DOUBLE
             );
         """);
 
@@ -61,9 +63,9 @@ public class DatabaseInitializer {
         stmt.executeUpdate("""
         INSERT INTO users (name, email) 
         VALUES 
-            ('Dudu', 'dudu@email.com'),
-            ('Ana', 'ana@gmail.com'),
-            ('Carlos', 'carlos@hotmail.com')
+            ('Dudu', 'dudu@email.com', '123456', 'admin'),
+            ('Ana', 'ana@gmail.com', '123456', 'user'),
+            ('Carlos', 'carlos@hotmail.com', '123456', 'user')
         ON CONFLICT DO NOTHING;
     """);
 
