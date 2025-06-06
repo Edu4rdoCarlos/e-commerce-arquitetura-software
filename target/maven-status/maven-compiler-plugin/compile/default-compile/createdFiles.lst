@@ -1,0 +1,8 @@
+infra/DatabaseConnection.class
+app/Main.class
+model/Order.class
+model/Product.class
+model/Cart.class
+model/User.class
+infra/DatabaseInitializer.class
+model/Payment.class
