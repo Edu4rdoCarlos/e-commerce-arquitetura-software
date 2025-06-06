@@ -14,7 +14,7 @@ public class ProductController {
         List<Product> products = productService.getAllProducts();
         System.out.println("Produtos disponíveis:");
         for (Product p : products) {
-            System.out.println("- " + p.getName() + " (R$ " + p.getPrice() + ")");
+            System.out.println(p.getId() + "- " + p.getName() + " (R$ " + p.getPrice() + ")");
         }
     }
 
