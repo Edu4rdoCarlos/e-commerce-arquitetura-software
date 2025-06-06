@@ -1,5 +1,6 @@
 package app;
 
+import consumer.EmailConsumer;
 import infra.DatabaseConnection;
 import infra.DatabaseInitializer;
 

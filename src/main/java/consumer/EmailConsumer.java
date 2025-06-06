@@ -1,7 +1,7 @@
 package consumer;
 
-import model.MessageType;
 import com.rabbitmq.client.*;
+import domain.model.MessageType;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;

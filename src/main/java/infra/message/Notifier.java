@@ -22,7 +22,6 @@ public class Notifier implements INotifier {
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
             System.out.println("Sending message...");
-            System.out.println(messageType.name());
 
             channel.queueDeclare(messageType.name(), true, false, false, null);
             channel.basicPublish("", messageType.name(), null, message.getBytes(StandardCharsets.UTF_8));
