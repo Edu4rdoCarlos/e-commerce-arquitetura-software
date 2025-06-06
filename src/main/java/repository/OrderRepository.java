@@ -86,7 +86,7 @@ public class OrderRepository {
                 Long userId = rs.getLong("user_id");
                 double total = rs.getDouble("total");
                 String status = rs.getString("status");
-                User user = new User(userId, "Desconhecido", "email@placeholder.com");
+                User user = new User(userId, "Desconhecido", "email@placeholder.com", "", null);
 
                 order = new Order(id, user, total, status, total);
             }
