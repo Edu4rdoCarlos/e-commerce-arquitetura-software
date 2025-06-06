@@ -1,5 +1,6 @@
 package app;
 
+import consumer.EmailConsumer;
 import controller.OrderController;
 import controller.ProductController;
 import domain.model.Cart;
@@ -32,9 +33,9 @@ public class Main {
             System.out.print("Email: ");
             String email = scanner.nextLine();
             System.out.print("Senha: ");
-            String senha = scanner.nextLine();
+            String password = scanner.nextLine();
 
-            User user = authService.authenticate(email, senha);
+            User user = authService.authenticate(email, password);
             if (user == null) {
                 System.out.println("Login inválido. Encerrando...");
                 return;
@@ -52,10 +53,9 @@ public class Main {
 
                     switch (opc) {
                         case 1 -> {
-                            System.out.print("ID do usuário para listar pedidos: ");
-                            Long userId = scanner.nextLong();
-                            User tempUser = new User(userId, "", "", "", null);
-                            orderController.listOrders(tempUser);
+                            System.out.println("Monitorando produto...");
+                            EmailConsumer ec = new EmailConsumer();
+                            ec.consume();
                         }
 
                         case 0 -> {
